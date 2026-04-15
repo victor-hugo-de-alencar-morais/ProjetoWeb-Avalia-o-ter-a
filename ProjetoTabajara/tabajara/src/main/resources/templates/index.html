@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizações Tabajara - Bem-vindo</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        .home-container {
+            max-width: 900px;
+            width: 100%;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .home-card {
+            background: white;
+            border-radius: 30px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 3rem 2rem;
+            text-align: center;
+            color: white;
+        }
+        
+        .hero-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+        
+        .content-section {
+            padding: 3rem;
+        }
+        
+        .welcome-text {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .welcome-text h2 {
+            color: #2d3748;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .welcome-text p {
+            color: #718096;
+            font-size: 1.1rem;
+        }
+        
+        .feature-box {
+            text-align: center;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            border-radius: 15px;
+        }
+        
+        .feature-box:hover {
+            background: #f7fafc;
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-title {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+        
+        .feature-desc {
+            color: #718096;
+            font-size: 0.9rem;
+        }
+        
+        .btn-custom {
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 0.5rem;
+        }
+        
+        .btn-login {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-login:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+            color: white;
+        }
+        
+        .btn-register {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+        
+        .btn-register:hover {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        .stats-section {
+            background: #f7fafc;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-top: 2rem;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            color: #718096;
+            font-size: 0.9rem;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            background: #f7fafc;
+            color: #718096;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 1.8rem;
+            }
+            
+            .content-section {
+                padding: 2rem;
+            }
+            
+            .feature-box {
+                margin-bottom: 1rem;
+            }
+            
+            .btn-custom {
+                width: 100%;
+                margin: 0.5rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="home-container">
+        <div class="home-card">
+            <!-- Hero Section -->
+            <div class="hero-section">
+                <div class="hero-icon">
+                    <i class="bi bi-stars"></i>
+                </div>
+                <h1 class="hero-title">Organizações Tabajara</h1>
+                <p class="hero-subtitle">Sistema de Gerenciamento Integrado</p>
+            </div>
+            
+            <!-- Content Section -->
+            <div class="content-section">
+                <div class="welcome-text">
+                    <h2>Bem-vindo ao Portal de Gerenciamento</h2>
+                    <p>Gerencie produtos, fornecedores e muito mais de forma eficiente</p>
+                </div>
+                
+                <!-- Features -->
+                <div class="row g-4 mb-4">
+                    <div class="col-md-4">
+                        <div class="feature-box">
+                            <div class="feature-icon">
+                                <i class="bi bi-box-seam"></i>
+                            </div>
+                            <div class="feature-title">Gestão de Produtos</div>
+                            <div class="feature-desc">Cadastre, edite e acompanhe seu estoque</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-box">
+                            <div class="feature-icon">
+                                <i class="bi bi-truck"></i>
+                            </div>
+                            <div class="feature-title">Fornecedores</div>
+                            <div class="feature-desc">Gerencie seus parceiros comerciais</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-box">
+                            <div class="feature-icon">
+                                <i class="bi bi-graph-up"></i>
+                            </div>
+                            <div class="feature-title">Relatórios</div>
+                            <div class="feature-desc">Análise de dados e métricas</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Call to Action -->
+                <div class="text-center mt-4">
+                    <h5 class="mb-3 text-muted">Acesse sua conta ou registre-se</h5>
+                    <div class="d-flex flex-wrap justify-content-center gap-3">
+                        <a th:href="@{/login}" class="btn btn-custom btn-login text-decoration-none">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>
+                            Acessar o Sistema
+                        </a>
+                        <a th:href="@{/usuarios/criar}" class="btn btn-custom btn-register text-decoration-none">
+                            <i class="bi bi-person-plus-fill me-2"></i>
+                            Registrar Novo Usuário
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Stats Section -->
+                <div class="stats-section">
+                    <div class="row text-center">
+                        <div class="col-md-4">
+                            <div class="stat-number">24/7</div>
+                            <div class="stat-label">Suporte Online</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-number">100%</div>
+                            <div class="stat-label">Segurança</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-number">+1000</div>
+                            <div class="stat-label">Clientes Satisfeitos</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <div class="footer">
+                <p class="mb-0">
+                    <i class="bi bi-c-circle me-1"></i>
+                    2026 Organizações Tabajara - Todos os direitos reservados
+                </p>
+                <small class="text-muted">Sistema seguro e confiável</small>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

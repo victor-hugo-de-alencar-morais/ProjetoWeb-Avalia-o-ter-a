@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizações Tabajara - Listagem de Produtos</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <!-- CSS Personalizado -->
+    <link rel="stylesheet" href="/style.css">
+    
+    <!-- CSS específico para esta página -->
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .page-container {
+            padding: 2rem 1rem;
+        }
+        
+        .content-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .page-title {
+            color: #2d3748;
+            font-weight: 700;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            border-left: 5px solid #667eea;
+            padding-left: 1rem;
+        }
+        
+        .btn-add {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 50px;
+            padding: 0.75rem 2rem;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-add:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+            background: linear-gradient(135deg, #764ba2, #667eea);
+        }
+        
+        .btn-add i {
+            margin-right: 0.5rem;
+        }
+        
+        .table-custom {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .table-custom thead {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .table-custom thead th {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            border: none;
+            padding: 1rem;
+        }
+        
+        .table-custom tbody tr {
+            transition: all 0.3s ease;
+        }
+        
+        .table-custom tbody tr:hover {
+            background-color: rgba(102, 126, 234, 0.1);
+            transform: scale(1.01);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .table-custom td {
+            padding: 1rem;
+            vertical-align: middle;
+            border-color: #edf2f7;
+        }
+        
+        .badge-unidade {
+            background-color: #e2e8f0;
+            color: #4a5568;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+        
+        .btn-action {
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            margin: 0 0.2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-action i {
+            margin-right: 0.3rem;
+        }
+        
+        .btn-edit {
+            background-color: #48bb78;
+            color: white;
+            border: none;
+        }
+        
+        .btn-edit:hover {
+            background-color: #38a169;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(72, 187, 120, 0.4);
+            color: white;
+        }
+        
+        .btn-delete {
+            background-color: #f56565;
+            color: white;
+            border: none;
+        }
+        
+        .btn-delete:hover {
+            background-color: #e53e3e;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(245, 101, 101, 0.4);
+            color: white;
+        }
+        
+        .btn-back {
+            background-color: #718096;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 0.5rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-back:hover {
+            background-color: #4a5568;
+            transform: translateX(-5px);
+            color: white;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            background-color: #f7fafc;
+            border-radius: 15px;
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            color: #cbd5e0;
+            margin-bottom: 1rem;
+        }
+        
+        .empty-state h3 {
+            color: #4a5568;
+            margin-bottom: 1rem;
+        }
+        
+        .empty-state p {
+            color: #718096;
+            margin-bottom: 2rem;
+        }
+        
+        .valor-formatado {
+            font-weight: 600;
+            color: #2d3748;
+        }
+        
+        .fornecedor-badge {
+            background-color: #9f7aea;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            display: inline-block;
+        }
+        
+        .btn-voltar {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 0.6rem 1.8rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-voltar:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .table-custom {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .page-title {
+                font-size: 1.8rem;
+            }
+            
+            .btn-action {
+                display: block;
+                margin: 0.5rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container page-container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-xl-11">
+                <!-- Card principal -->
+                <div class="content-card">
+                    <!-- Cabeçalho -->
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+                        <div>
+                            <h1 class="page-title">
+                                <i class="bi bi-box-seam me-3"></i>
+                                Listagem de Produtos
+                            </h1>
+                            <p class="text-muted ms-4 ps-2">
+                                <i class="bi bi-grid-3x3-gap-fill me-2"></i>
+                                Gerencie todos os produtos do sistema
+                            </p>
+                        </div>
+                        <div class="mt-3 mt-md-0">
+                            <a th:href="@{/produtos/criar}" class="btn btn-add text-white">
+                                <i class="bi bi-plus-circle"></i>
+                                Novo Produto
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Tabela de produtos -->
+                    <div class="table-responsive">
+                        <table class="table table-custom">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Descrição</th>
+                                    <th>Valor</th>
+                                    <th>Unidade</th>
+                                    <th>Marca</th>
+                                    <th>Fornecedor</th>
+                                    <th class="text-center">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="produto : ${produtos}" th:unless="${#lists.isEmpty(produtos)}">
+                                    <td>
+                                        <span class="badge bg-secondary bg-opacity-25 text-dark">
+                                            #<span th:text="${produto.idProduto}">1</span>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <strong th:text="${produto.descricaoProduto}">Produto Exemplo</strong>
+                                    </td>
+                                    <td>
+                                        <span class="valor-formatado">
+                                            R$ <span th:text="${#numbers.formatDecimal(produto.valorProduto, 1, 2)}">99,90</span>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge-unidade">
+                                            <i class="bi bi-box me-1"></i>
+                                            <span th:text="${produto.unidadeProduto}">UN</span>
+                                        </span>
+                                    </td>
+                                    <td th:text="${produto.marcaProduto}">Marca Exemplo</td>
+                                    <td>
+                                        <span class="fornecedor-badge">
+                                            <i class="bi bi-truck me-1"></i>
+                                            <span th:text="${produto.fornecedor.nomeFornecedor}">Fornecedor</span>
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <a th:href="@{/produtos/editar/{id}(id=${produto.idProduto})}" 
+                                               class="btn btn-action btn-edit text-decoration-none">
+                                                <i class="bi bi-pencil-square"></i>
+                                                Editar
+                                            </a>
+                                            <a th:href="@{/produtos/excluir/{id}(id=${produto.idProduto})}" 
+                                               class="btn btn-action btn-delete text-decoration-none"
+                                               onclick="return confirm('Tem certeza que deseja excluir este produto?')">
+                                                <i class="bi bi-trash"></i>
+                                                Excluir
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                                <!-- Mensagem quando não há produtos -->
+                                <tr th:if="${#lists.isEmpty(produtos)}">
+                                    <td colspan="7" class="text-center p-5">
+                                        <div class="empty-state">
+                                            <i class="bi bi-box-seam"></i>
+                                            <h3>Nenhum produto cadastrado</h3>
+                                            <p class="text-muted">Comece adicionando seu primeiro produto ao sistema</p>
+                                            <a th:href="@{/produtos/criar}" class="btn btn-add text-white">
+                                                <i class="bi bi-plus-circle"></i>
+                                                Adicionar Produto
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Rodapé da tabela -->
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+                        <div class="text-muted small" th:unless="${#lists.isEmpty(produtos)}">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Total de <span th:text="${#lists.size(produtos)}">0</span> produto(s) encontrado(s)
+                        </div>
+                        
+                        <a th:href="@{/tabajara}" class="btn-voltar">
+                            <i class="bi bi-arrow-left"></i>
+                            Voltar ao Início
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Script para formatação de valores (opcional) -->
+    <script>
+        function confirmarExclusao() {
+            return confirm('Tem certeza que deseja excluir este produto? Esta ação não pode ser desfeita.');
+        }
+    </script>
+</body>
+</html>

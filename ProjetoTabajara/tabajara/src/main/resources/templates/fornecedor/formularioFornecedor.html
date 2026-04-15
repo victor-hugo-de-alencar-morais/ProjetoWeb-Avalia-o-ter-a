@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizações Tabajara - Formulário de Fornecedor</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <!-- CSS Personalizado -->
+    <link rel="stylesheet" href="/style.css">
+    
+    <!-- CSS específico para o formulário -->
+    <style>
+        body {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 2rem 0;
+        }
+        
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .form-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 2.5rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .form-title {
+            color: #2d3748;
+            font-weight: 700;
+            font-size: 2.2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        
+        .form-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            border-radius: 2px;
+        }
+        
+        .form-title i {
+            color: #48bb78;
+            margin-right: 0.5rem;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .form-label i {
+            color: #48bb78;
+            font-size: 1.2rem;
+        }
+        
+        .form-control, .form-select {
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: #48bb78;
+            box-shadow: 0 0 0 0.2rem rgba(72, 187, 120, 0.25);
+            outline: none;
+        }
+        
+        .form-control:hover, .form-select:hover {
+            border-color: #9ae6b4;
+        }
+        
+        .input-group-text {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+            border: none;
+            border-radius: 12px 0 0 12px;
+            padding: 0.75rem 1.2rem;
+        }
+        
+        .btn-submit {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 1rem 2rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(72, 187, 120, 0.4);
+            background: linear-gradient(135deg, #38a169, #48bb78);
+        }
+        
+        .btn-submit i {
+            font-size: 1.2rem;
+        }
+        
+        .btn-back {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        
+        .btn-back:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 4px 15px rgba(72, 187, 120, 0.4);
+            color: white;
+        }
+        
+        .btn-back i {
+            font-size: 1.1rem;
+        }
+        
+        .form-text {
+            color: #718096;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+        
+        .required:after {
+            content: '*';
+            color: #f56565;
+            margin-left: 0.2rem;
+            font-size: 1.2rem;
+        }
+        
+        .alert-custom {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-left: 4px solid #f59e0b;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .alert-custom i {
+            color: #f59e0b;
+            font-size: 1.5rem;
+        }
+        
+        .field-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .row-fields {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        @media (max-width: 640px) {
+            .form-card {
+                padding: 1.5rem;
+                margin: 0 1rem;
+            }
+            
+            .form-title {
+                font-size: 1.8rem;
+            }
+            
+            .row-fields {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+            
+            .btn-back {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Estilos para máscaras */
+        .cnpj-mask, .telefone-mask {
+            font-family: 'Courier New', monospace;
+        }
+
+        /* Dica de formatação */
+        .format-hint {
+            background-color: #f0fff4;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: #48bb78;
+            border: 1px solid #9ae6b4;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .format-hint i {
+            color: #48bb78;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <!-- Card do formulário -->
+            <div class="form-card">
+                <h1 class="form-title">
+                    <i class="bi bi-truck"></i>
+                    <span th:if="${fornecedor.idFornecedor == null}">Cadastrar Fornecedor</span>
+                    <span th:if="${fornecedor.idFornecedor != null}">Editar Fornecedor</span>
+                </h1>
+                
+                <!-- Alerta informativo -->
+                <div class="alert-custom">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                    <div>
+                        <strong>Importante!</strong> Preencha todos os campos obrigatórios marcados com <span class="text-danger">*</span>
+                    </div>
+                </div>
+
+                <!-- Formulário -->
+                <form th:action="@{/fornecedores/salvar}" method="POST" th:object="${fornecedor}" onsubmit="return validarFormulario()">
+                    <input type="hidden" th:field="*{idFornecedor}" />
+                    
+                    <!-- Campo Nome (linha completa) -->
+                    <div class="field-group">
+                        <label for="nomeFornecedor" class="form-label">
+                            <i class="bi bi-building"></i>
+                            <span class="required">Nome do Fornecedor</span>
+                        </label>
+                        <input type="text" 
+                               class="form-control" 
+                               id="nomeFornecedor" 
+                               name="nomeFornecedor" 
+                               th:field="*{nomeFornecedor}"
+                               placeholder="Digite o nome completo do fornecedor"
+                               required
+                               maxlength="100">
+                        <div class="form-text">Ex: Distribuidora ABC, Indústrias XYZ, etc.</div>
+                    </div>
+
+                    <!-- Linha com dois campos: CNPJ e Telefone -->
+                    <div class="row-fields">
+                        <div class="field-group">
+                            <label for="cnpjFornecedor" class="form-label">
+                                <i class="bi bi-upc-scan"></i>
+                                <span class="required">CNPJ</span>
+                            </label>
+                            <input type="text" 
+                                   class="form-control cnpj-mask" 
+                                   id="cnpjFornecedor" 
+                                   name="cnpjFornecedor" 
+                                   th:field="*{cnpjFornecedor}"
+                                   placeholder="00.000.000/0000-00"
+                                   required
+                                   maxlength="18"
+                                   onkeyup="mascaraCNPJ(this)">
+                            <div class="format-hint">
+                                <i class="bi bi-info-circle-fill"></i>
+                                Formato: 00.000.000/0000-00
+                            </div>
+                        </div>
+                        
+                        <div class="field-group">
+                            <label for="telefoneFornecedor" class="form-label">
+                                <i class="bi bi-telephone"></i>
+                                <span class="required">Telefone</span>
+                            </label>
+                            <input type="text" 
+                                   class="form-control telefone-mask" 
+                                   id="telefoneFornecedor" 
+                                   name="telefoneFornecedor" 
+                                   th:field="*{telefoneFornecedor}"
+                                   placeholder="(00) 0000-0000"
+                                   required
+                                   maxlength="15"
+                                   onkeyup="mascaraTelefone(this)">
+                            <div class="format-hint">
+                                <i class="bi bi-info-circle-fill"></i>
+                                Formato: (00) 0000-0000 ou (00) 00000-0000
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Campo Endereço (linha completa) -->
+                    <div class="field-group">
+                        <label for="enderecoFornecedor" class="form-label">
+                            <i class="bi bi-geo-alt"></i>
+                            <span class="required">Endereço Completo</span>
+                        </label>
+                        <input type="text" 
+                               class="form-control" 
+                               id="enderecoFornecedor" 
+                               name="enderecoFornecedor" 
+                               th:field="*{enderecoFornecedor}"
+                               placeholder="Rua, número, complemento, bairro"
+                               required
+                               maxlength="200">
+                        <div class="form-text">Ex: Av. Paulista, 1000 - Sala 101, Bela Vista</div>
+                    </div>
+
+                    <!-- Campo Cidade (linha completa) -->
+                    <div class="field-group">
+                        <label for="cidadeFornecedor" class="form-label">
+                            <i class="bi bi-building"></i>
+                            <span class="required">Cidade</span>
+                        </label>
+                        <input type="text" 
+                               class="form-control" 
+                               id="cidadeFornecedor" 
+                               name="cidadeFornecedor" 
+                               th:field="*{cidadeFornecedor}"
+                               placeholder="Digite a cidade"
+                               required
+                               maxlength="100">
+                        <div class="form-text">Ex: São Paulo, Rio de Janeiro, Belo Horizonte</div>
+                    </div>
+
+                    <!-- Informações adicionais (opcional) -->
+                    <div class="bg-light p-3 rounded-3 mb-3">
+                        <div class="d-flex align-items-center gap-2 text-success">
+                            <i class="bi bi-check-circle-fill"></i>
+                            <small>Todos os dados serão armazenados com segurança</small>
+                        </div>
+                    </div>
+
+                    <!-- Botões de ação -->
+                    <button type="submit" class="btn-submit">
+                        <i class="bi bi-check-lg"></i>
+                        <span th:if="${fornecedor.idFornecedor == null}">Cadastrar Fornecedor</span>
+                        <span th:if="${fornecedor.idFornecedor != null}">Atualizar Fornecedor</span>
+                    </button>
+                </form>
+
+                <!-- Link de voltar -->
+                <div class="text-center mt-4">
+                    <a th:href="@{/fornecedores/listar}" class="btn-back">
+                        <i class="bi bi-arrow-left"></i>
+                        Voltar para listagem
+                    </a>
+                </div>
+            </div>
+
+            <!-- Dica rápida (opcional) -->
+            <div class="text-center mt-3 text-white">
+                <small>
+                    <i class="bi bi-info-circle me-1"></i>
+                    Todos os campos são obrigatórios para o cadastro
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Scripts para máscaras e validação -->
+    <script>
+        // Máscara para CNPJ
+        function mascaraCNPJ(input) {
+            let valor = input.value.replace(/\D/g, '');
+            
+            if (valor.length <= 14) {
+                valor = valor.replace(/^(\d{2})(\d)/, '$1.$2');
+                valor = valor.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
+                valor = valor.replace(/\.(\d{3})(\d)/, '.$1/$2');
+                valor = valor.replace(/(\d{4})(\d)/, '$1-$2');
+            }
+            
+            input.value = valor;
+        }
+
+        // Máscara para Telefone
+        function mascaraTelefone(input) {
+            let valor = input.value.replace(/\D/g, '');
+            
+            if (valor.length <= 11) {
+                if (valor.length <= 10) {
+                    valor = valor.replace(/^(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+                } else {
+                    valor = valor.replace(/^(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+                }
+            }
+            
+            input.value = valor;
+        }
+
+        // Validação do formulário
+        function validarFormulario() {
+            const nome = document.getElementById('nomeFornecedor').value;
+            const cnpj = document.getElementById('cnpjFornecedor').value.replace(/\D/g, '');
+            const telefone = document.getElementById('telefoneFornecedor').value.replace(/\D/g, '');
+            const endereco = document.getElementById('enderecoFornecedor').value;
+            const cidade = document.getElementById('cidadeFornecedor').value;
+            
+            // Validar campos obrigatórios
+            if (!nome || !cnpj || !telefone || !endereco || !cidade) {
+                alert('Por favor, preencha todos os campos obrigatórios!');
+                return false;
+            }
+            
+            // Validar CNPJ (14 dígitos)
+            if (cnpj.length !== 14) {
+                alert('CNPJ inválido! O CNPJ deve conter 14 dígitos.');
+                return false;
+            }
+            
+            // Validar telefone (mínimo 10 dígitos)
+            if (telefone.length < 10 || telefone.length > 11) {
+                alert('Telefone inválido! O telefone deve ter 10 ou 11 dígitos.');
+                return false;
+            }
+            
+            return true;
+        }
+
+        // Aplicar máscaras aos campos quando a página carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            const cnpjField = document.getElementById('cnpjFornecedor');
+            const telefoneField = document.getElementById('telefoneFornecedor');
+            
+            // Se estiver editando e os campos já tiverem valor, aplicar máscara
+            if (cnpjField.value) {
+                mascaraCNPJ(cnpjField);
+            }
+            
+            if (telefoneField.value) {
+                mascaraTelefone(telefoneField);
+            }
+        });
+    </script>
+</body>
+</html>

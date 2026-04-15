@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizações Tabajara - Recuperação de Senha</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <!-- CSS Personalizado -->
+    <link rel="stylesheet" href="/style.css">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        .recover-container {
+            max-width: 500px;
+            width: 100%;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .recover-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 2.5rem;
+        }
+        
+        .recover-title {
+            color: #2d3748;
+            font-weight: 700;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+        
+        .recover-subtitle {
+            color: #718096;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+        
+        .recover-icon {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .recover-icon i {
+            font-size: 4rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .form-label i {
+            color: #667eea;
+        }
+        
+        .form-control {
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+            outline: none;
+        }
+        
+        .btn-recover {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 0.875rem;
+            font-weight: 600;
+            font-size: 1rem;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .btn-recover:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-back {
+            background-color: #718096;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 0.75rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            font-weight: 500;
+        }
+        
+        .btn-back:hover {
+            background-color: #4a5568;
+            transform: translateX(-5px);
+            color: white;
+        }
+        
+        .alert-custom {
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        .alert-custom i {
+            font-size: 1.25rem;
+        }
+        
+        .alert-success {
+            background-color: #c6f6d5;
+            border-left: 4px solid #38a169;
+            color: #22543d;
+        }
+        
+        .alert-danger {
+            background-color: #fed7d7;
+            border-left: 4px solid #e53e3e;
+            color: #742a2a;
+        }
+        
+        .info-text {
+            background-color: #ebf4ff;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.875rem;
+            color: #4a5568;
+        }
+        
+        .info-text i {
+            color: #667eea;
+            font-size: 1.25rem;
+        }
+        
+        @media (max-width: 576px) {
+            .recover-card {
+                padding: 1.5rem;
+            }
+            
+            .recover-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="recover-container">
+        <div class="recover-card">
+            <div class="recover-icon">
+                <i class="bi bi-key-fill"></i>
+            </div>
+            
+            <h1 class="recover-title">Recuperar Senha</h1>
+            <p class="recover-subtitle">
+                Digite seu e-mail para receber as instruções de recuperação
+            </p>
+            
+            <!-- Mensagens de erro/sucesso -->
+            <div th:if="${erro}" class="alert-custom alert-danger">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+                <span th:text="${erro}">Erro ao processar solicitação</span>
+            </div>
+            
+            <div th:if="${success}" class="alert-custom alert-success">
+                <i class="bi bi-check-circle-fill"></i>
+                <span th:text="${success}">E-mail enviado com sucesso!</span>
+            </div>
+            
+            <!-- Formulário -->
+            <form action="/esqueci-senha" method="POST">
+                <div class="mb-4">
+                    <label for="email" class="form-label">
+                        <i class="bi bi-envelope-fill"></i>
+                        E-mail
+                    </label>
+                    <input type="email" 
+                           class="form-control" 
+                           id="email" 
+                           name="email" 
+                           required 
+                           placeholder="seu@email.com"
+                           autocomplete="email">
+                    <div class="form-text mt-2">
+                        <i class="bi bi-info-circle me-1"></i>
+                        Enviaremos um link para redefinir sua senha
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-recover">
+                    <i class="bi bi-envelope-paper-fill"></i>
+                    Enviar instruções
+                </button>
+            </form>
+            
+            <a href="/login" class="btn-back">
+                <i class="bi bi-arrow-left"></i>
+                Voltar para o login
+            </a>
+            
+            <div class="info-text">
+                <i class="bi bi-shield-check"></i>
+                <div>
+                    <strong>Segurança garantida</strong><br>
+                    Suas informações estão seguras e serão tratadas com confidencialidade.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

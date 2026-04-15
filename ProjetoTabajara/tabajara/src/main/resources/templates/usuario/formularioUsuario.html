@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizações Tabajara - Formulário de Usuário</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <!-- CSS Personalizado -->
+    <link rel="stylesheet" href="/style.css">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 2rem 0;
+        }
+        
+        .form-container {
+            max-width: 700px;
+            margin: 0 auto;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .form-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 2.5rem;
+        }
+        
+        .form-title {
+            color: #2d3748;
+            font-weight: 700;
+            font-size: 2.2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        
+        .form-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+        
+        .form-title i {
+            color: #667eea;
+            margin-right: 0.5rem;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .form-label i {
+            color: #667eea;
+            font-size: 1.1rem;
+        }
+        
+        .form-control {
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+            outline: none;
+        }
+        
+        .form-control:hover {
+            border-color: #9f7aea;
+        }
+        
+        .input-group-text {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 12px 0 0 12px;
+            padding: 0.75rem 1.2rem;
+        }
+        
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 1rem 2rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-cancel {
+            background-color: #718096;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            font-weight: 500;
+        }
+        
+        .btn-cancel:hover {
+            background-color: #4a5568;
+            transform: translateX(-5px);
+            color: white;
+        }
+        
+        .form-text {
+            color: #718096;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+        
+        .required:after {
+            content: '*';
+            color: #f56565;
+            margin-left: 0.2rem;
+            font-size: 1.2rem;
+        }
+        
+        .alert-custom {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-left: 4px solid #f59e0b;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .alert-custom i {
+            color: #f59e0b;
+            font-size: 1.25rem;
+        }
+        
+        .field-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .password-strength {
+            margin-top: 0.5rem;
+            height: 4px;
+            background-color: #e2e8f0;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .password-strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+        
+        @media (max-width: 768px) {
+            .form-card {
+                padding: 1.5rem;
+                margin: 0 1rem;
+            }
+            
+            .form-title {
+                font-size: 1.8rem;
+            }
+            
+            .btn-cancel {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <div class="form-card">
+                <h1 class="form-title">
+                    <i class="bi bi-person-plus-fill"></i>
+                    <span th:if="${usuario.idUsuario == null}">Cadastrar Usuário</span>
+                    <span th:if="${usuario.idUsuario != null}">Editar Usuário</span>
+                </h1>
+                
+                <!-- Alerta informativo -->
+                <div class="alert-custom">
+                    <i class="bi bi-info-circle-fill"></i>
+                    <div>
+                        <strong>Campos obrigatórios</strong> estão marcados com <span class="text-danger">*</span>
+                    </div>
+                </div>
+                
+                <!-- Formulário -->
+                <form th:action="@{/usuarios/salvar}" method="POST" th:object="${usuario}" onsubmit="return validarFormulario()">
+                    <input type="hidden" th:field="*{idUsuario}" />
+                    
+                    <!-- Nome -->
+                    <div class="field-group">
+                        <label for="nomeUsuario" class="form-label">
+                            <i class="bi bi-person-fill"></i>
+                            <span class="required">Nome Completo</span>
+                        </label>
+                        <input type="text" 
+                               class="form-control" 
+                               id="nomeUsuario" 
+                               name="nomeUsuario" 
+                               th:field="*{nomeUsuario}"
+                               placeholder="Digite o nome completo"
+                               required
+                               maxlength="100">
+                        <div class="form-text">Ex: João da Silva Santos</div>
+                    </div>
+                    
+                    <!-- E-mail -->
+                    <div class="field-group">
+                        <label for="emailUsuario" class="form-label">
+                            <i class="bi bi-envelope-fill"></i>
+                            <span class="required">E-mail</span>
+                        </label>
+                        <input type="email" 
+                               class="form-control" 
+                               id="emailUsuario" 
+                               name="emailUsuario" 
+                               th:field="*{emailUsuario}"
+                               placeholder="seu@email.com"
+                               required
+                               autocomplete="email">
+                        <div class="form-text">Digite um e-mail válido para receber notificações</div>
+                    </div>
+                    
+                    <!-- Login -->
+                    <div class="field-group">
+                        <label for="loginUsuario" class="form-label">
+                            <i class="bi bi-person-badge-fill"></i>
+                            <span class="required">Login</span>
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-at"></i>
+                            </span>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="loginUsuario" 
+                                   name="loginUsuario" 
+                                   th:field="*{loginUsuario}"
+                                   placeholder="usuario123"
+                                   required
+                                   maxlength="50">
+                        </div>
+                        <div class="form-text">Usado para acessar o sistema (mínimo 3 caracteres)</div>
+                    </div>
+                    
+                    <!-- Senha -->
+                    <div class="field-group">
+                        <label for="senhaUsuario" class="form-label">
+                            <i class="bi bi-lock-fill"></i>
+                            <span class="required" th:if="${usuario.idUsuario == null}">Senha</span>
+                            <span th:if="${usuario.idUsuario != null}">Nova Senha (opcional)</span>
+                        </label>
+                        <input type="password" 
+                               class="form-control" 
+                               id="senhaUsuario" 
+                               name="senhaUsuario" 
+                               th:field="*{senhaUsuario}"
+                               placeholder="Digite sua senha"
+                               th:required="${usuario.idUsuario == null}"
+                               autocomplete="new-password"
+                               onkeyup="avaliarForcaSenha()">
+                        <div class="password-strength" id="passwordStrength">
+                            <div class="password-strength-bar" id="passwordStrengthBar"></div>
+                        </div>
+                        <div class="form-text" id="passwordHint">
+                            <i class="bi bi-shield"></i>
+                            A senha deve ter no mínimo 6 caracteres
+                        </div>
+                    </div>
+                    
+                    <!-- Botões -->
+                    <div class="d-flex flex-column flex-md-row justify-content-between gap-3 mt-4">
+                        <button type="submit" class="btn-submit">
+                            <i class="bi bi-check-lg"></i>
+                            <span th:if="${usuario.idUsuario == null}">Cadastrar Usuário</span>
+                            <span th:if="${usuario.idUsuario != null}">Atualizar Usuário</span>
+                        </button>
+                    </div>
+                </form>
+                
+                <!-- Botão de voltar -->
+                <div class="text-center mt-4">
+                    <a th:href="@{/usuarios/listar}" class="btn-cancel" th:if="${usuario.idUsuario != null}">
+                        <i class="bi bi-arrow-left"></i>
+                        Cancelar
+                    </a>
+                    <a href="/login" class="btn-cancel" th:if="${usuario.idUsuario == null}">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        Ir para o Login
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Informação de segurança -->
+            <div class="text-center mt-3">
+                <small class="text-white">
+                    <i class="bi bi-shield-lock-fill me-1"></i>
+                    Sistema seguro - Suas informações estão protegidas
+                </small>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Validação do formulário
+        function validarFormulario() {
+            const nome = document.getElementById('nomeUsuario').value.trim();
+            const email = document.getElementById('emailUsuario').value.trim();
+            const login = document.getElementById('loginUsuario').value.trim();
+            const senha = document.getElementById('senhaUsuario').value;
+            
+            // Validar nome
+            if (nome.length < 3) {
+                alert('Nome deve ter pelo menos 3 caracteres!');
+                document.getElementById('nomeUsuario').focus();
+                return false;
+            }
+            
+            // Validar email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Digite um e-mail válido!');
+                document.getElementById('emailUsuario').focus();
+                return false;
+            }
+            
+            // Validar login
+            if (login.length < 3) {
+                alert('Login deve ter pelo menos 3 caracteres!');
+                document.getElementById('loginUsuario').focus();
+                return false;
+            }
+            
+            // Validar senha (apenas para cadastro)
+            const idUsuario = document.querySelector('input[name="idUsuario"]').value;
+            if (!idUsuario && senha.length < 6) {
+                alert('Senha deve ter pelo menos 6 caracteres!');
+                document.getElementById('senhaUsuario').focus();
+                return false;
+            }
+            
+            return true;
+        }
+        
+        // Avaliar força da senha
+        function avaliarForcaSenha() {
+            const senha = document.getElementById('senhaUsuario').value;
+            const bar = document.getElementById('passwordStrengthBar');
+            const hint = document.getElementById('passwordHint');
+            
+            let forca = 0;
+            
+            if (senha.length >= 6) forca += 1;
+            if (senha.length >= 10) forca += 1;
+            if (senha.match(/[a-z]/) && senha.match(/[A-Z]/)) forca += 1;
+            if (senha.match(/[0-9]/)) forca += 1;
+            if (senha.match(/[^a-zA-Z0-9]/)) forca += 1;
+            
+            const porcentagem = (forca / 5) * 100;
+            bar.style.width = porcentagem + '%';
+            
+            if (porcentagem <= 20) {
+                bar.style.background = '#e53e3e';
+                hint.innerHTML = '<i class="bi bi-shield-exclamation"></i> Senha fraca - use pelo menos 6 caracteres';
+            } else if (porcentagem <= 60) {
+                bar.style.background = '#ed8936';
+                hint.innerHTML = '<i class="bi bi-shield"></i> Senha média - adicione números e símbolos';
+            } else {
+                bar.style.background = '#38a169';
+                hint.innerHTML = '<i class="bi bi-shield-check"></i> Senha forte - muito boa!';
+            }
+        }
+        
+        // Máscara de email em tempo real
+        document.getElementById('emailUsuario')?.addEventListener('input', function(e) {
+            this.value = this.value.toLowerCase();
+        });
+    </script>
+</body>
+</html>

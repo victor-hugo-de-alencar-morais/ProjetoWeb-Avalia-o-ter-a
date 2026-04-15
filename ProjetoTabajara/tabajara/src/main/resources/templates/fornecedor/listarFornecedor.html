@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizações Tabajara - Listagem de Fornecedores</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <!-- CSS Personalizado -->
+    <link rel="stylesheet" href="/style.css">
+    
+    <!-- CSS específico para esta página -->
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .page-container {
+            padding: 2rem 1rem;
+        }
+        
+        .content-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .page-title {
+            color: #2d3748;
+            font-weight: 700;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            border-left: 5px solid #48bb78;
+            padding-left: 1rem;
+        }
+        
+        .btn-add {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            border: none;
+            border-radius: 50px;
+            padding: 0.75rem 2rem;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(72, 187, 120, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-add:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(72, 187, 120, 0.6);
+            background: linear-gradient(135deg, #38a169, #48bb78);
+        }
+        
+        .btn-add i {
+            margin-right: 0.5rem;
+        }
+        
+        .table-custom {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .table-custom thead {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+        }
+        
+        .table-custom thead th {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            border: none;
+            padding: 1rem;
+            white-space: nowrap;
+        }
+        
+        .table-custom tbody tr {
+            transition: all 0.3s ease;
+        }
+        
+        .table-custom tbody tr:hover {
+            background-color: rgba(72, 187, 120, 0.1);
+            transform: scale(1.01);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .table-custom td {
+            padding: 1rem;
+            vertical-align: middle;
+            border-color: #edf2f7;
+        }
+        
+        .badge-id {
+            background-color: #e2e8f0;
+            color: #4a5568;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: inline-block;
+        }
+        
+        .btn-action {
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            margin: 0 0.2rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        
+        .btn-action i {
+            font-size: 1rem;
+        }
+        
+        .btn-edit {
+            background-color: #48bb78;
+            color: white;
+            border: none;
+        }
+        
+        .btn-edit:hover {
+            background-color: #38a169;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(72, 187, 120, 0.4);
+            color: white;
+        }
+        
+        .btn-delete {
+            background-color: #f56565;
+            color: white;
+            border: none;
+        }
+        
+        .btn-delete:hover {
+            background-color: #e53e3e;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(245, 101, 101, 0.4);
+            color: white;
+        }
+        
+        .btn-back {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 0.6rem 1.8rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-back:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 4px 15px rgba(72, 187, 120, 0.4);
+            color: white;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            background-color: #f7fafc;
+            border-radius: 15px;
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            color: #cbd5e0;
+            margin-bottom: 1rem;
+        }
+        
+        .empty-state h3 {
+            color: #4a5568;
+            margin-bottom: 1rem;
+        }
+        
+        .empty-state p {
+            color: #718096;
+            margin-bottom: 2rem;
+        }
+        
+        .fornecedor-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .fornecedor-nome {
+            font-weight: 600;
+            color: #2d3748;
+        }
+        
+        .fornecedor-cidade {
+            font-size: 0.85rem;
+            color: #718096;
+        }
+        
+        .cnpj-formatado {
+            font-family: 'Courier New', monospace;
+            font-weight: 500;
+            color: #4a5568;
+        }
+        
+        .telefone-formatado {
+            color: #4a5568;
+        }
+        
+        .endereco-resumido {
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: #4a5568;
+        }
+        
+        @media (max-width: 768px) {
+            .table-custom {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .page-title {
+                font-size: 1.8rem;
+            }
+            
+            .btn-action {
+                padding: 0.3rem 0.8rem;
+                font-size: 0.8rem;
+            }
+            
+            .content-card {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container page-container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-xl-11">
+                <!-- Card principal -->
+                <div class="content-card">
+                    <!-- Cabeçalho -->
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+                        <div>
+                            <h1 class="page-title">
+                                <i class="bi bi-truck me-3"></i>
+                                Listagem de Fornecedores
+                            </h1>
+                            <p class="text-muted ms-4 ps-2">
+                                <i class="bi bi-building me-2"></i>
+                                Gerencie todos os fornecedores parceiros
+                            </p>
+                        </div>
+                        <div class="mt-3 mt-md-0">
+                            <a th:href="@{/fornecedores/criar}" class="btn btn-add text-white">
+                                <i class="bi bi-plus-circle"></i>
+                                Novo Fornecedor
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Tabela de fornecedores -->
+                    <div class="table-responsive">
+                        <table class="table table-custom">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Fornecedor</th>
+                                    <th>CNPJ</th>
+                                    <th>Endereço</th>
+                                    <th>Telefone</th>
+                                    <th>Cidade</th>
+                                    <th class="text-center">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="fornecedor : ${fornecedores}" th:unless="${#lists.isEmpty(fornecedores)}">
+                                    <td>
+                                        <span class="badge-id">
+                                            #<span th:text="${fornecedor.idFornecedor}">1</span>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="fornecedor-info">
+                                            <span class="fornecedor-nome" th:text="${fornecedor.nomeFornecedor}">Nome Fornecedor</span>
+                                            <span class="fornecedor-cidade">
+                                                <i class="bi bi-geo-alt-fill me-1"></i>
+                                                <span th:text="${fornecedor.cidadeFornecedor}">Cidade</span>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="cnpj-formatado">
+                                            <i class="bi bi-upc-scan me-1"></i>
+                                            <span th:text="${fornecedor.cnpjFornecedor}">00.000.000/0000-00</span>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="endereco-resumido" 
+                                              th:text="${fornecedor.enderecoFornecedor}"
+                                              title="${fornecedor.enderecoFornecedor}">
+                                            Endereço completo do fornecedor
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="telefone-formatado">
+                                            <i class="bi bi-telephone me-1"></i>
+                                            <span th:text="${fornecedor.telefoneFornecedor}">(00) 0000-0000</span>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-success bg-opacity-10 text-success">
+                                            <i class="bi bi-building me-1"></i>
+                                            <span th:text="${fornecedor.cidadeFornecedor}">Cidade</span>
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <a th:href="@{/fornecedores/editar/{id}(id=${fornecedor.idFornecedor})}" 
+                                               class="btn-action btn-edit text-decoration-none">
+                                                <i class="bi bi-pencil-square"></i>
+                                                Editar
+                                            </a>
+                                            <a th:href="@{/fornecedores/excluir/{id}(id=${fornecedor.idFornecedor})}" 
+                                               class="btn-action btn-delete text-decoration-none"
+                                               onclick="return confirm('Tem certeza que deseja excluir este fornecedor? Esta ação não poderá ser desfeita.')">
+                                                <i class="bi bi-trash"></i>
+                                                Excluir
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                                <!-- Mensagem quando não há fornecedores -->
+                                <tr th:if="${#lists.isEmpty(fornecedores)}">
+                                    <td colspan="7" class="text-center p-5">
+                                        <div class="empty-state">
+                                            <i class="bi bi-truck"></i>
+                                            <h3>Nenhum fornecedor cadastrado</h3>
+                                            <p class="text-muted">Comece adicionando seu primeiro fornecedor ao sistema</p>
+                                            <a th:href="@{/fornecedores/criar}" class="btn btn-add text-white">
+                                                <i class="bi bi-plus-circle"></i>
+                                                Adicionar Fornecedor
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Rodapé da tabela -->
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+                        <div class="text-muted small" th:unless="${#lists.isEmpty(fornecedores)}">
+                            <i class="bi bi-building me-1"></i>
+                            Total de <span th:text="${#lists.size(fornecedores)}">0</span> fornecedor(es) cadastrado(s)
+                        </div>
+                        
+                        <div class="d-flex gap-2">
+                            <a th:href="@{/tabajara}" class="btn-back">
+                                <i class="bi bi-house-door"></i>
+                                Início
+                            </a>
+                            <a th:href="@{/produtos/listar}" class="btn-back" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                                <i class="bi bi-box-seam"></i>
+                                Produtos
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Script para formatação e confirmação -->
+    <script>
+        // Função global de confirmação
+        function confirmarExclusao(event) {
+            if (!confirm('Tem certeza que deseja excluir este fornecedor? Esta ação não poderá ser desfeita.')) {
+                event.preventDefault();
+                return false;
+            }
+            return true;
+        }
+
+        // Formatar CNPJ (opcional - se os dados vierem sem formatação)
+        function formatarCNPJ(cnpj) {
+            return cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
+        }
+
+        // Formatar telefone (opcional - se os dados vierem sem formatação)
+        function formatarTelefone(telefone) {
+            return telefone.replace(/^(\d{2})(\d{4,5})(\d{4})$/, '($1) $2-$3');
+        }
+
+        // Aplicar formatação quando a página carregar (se necessário)
+        document.addEventListener('DOMContentLoaded', function() {
+            // Exemplo de como formatar se os dados vierem sem formatação
+            // const cnpjs = document.querySelectorAll('.cnpj-formatado span');
+            // cnpjs.forEach(el => {
+            //     let cnpj = el.textContent.replace(/\D/g, '');
+            //     if (cnpj.length === 14) {
+            //         el.textContent = formatarCNPJ(cnpj);
+            //     }
+            // });
+        });
+    </script>
+</body>
+</html>
