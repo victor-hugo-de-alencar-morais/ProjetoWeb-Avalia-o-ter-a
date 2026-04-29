@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.projetotabajara.tabajara.entity.ItemDoPedido;
 import br.com.projetotabajara.tabajara.entity.Pedido;
 import br.com.projetotabajara.tabajara.entity.Produto;
 import br.com.projetotabajara.tabajara.repository.PedidoRepository;
