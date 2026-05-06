@@ -13,24 +13,24 @@ import br.com.projetotabajara.tabajara.repository.ProdutoRepository;
 
 @Service
 public class PedidoService {
-    
+
     @Autowired
     private PedidoRepository pedidoRepository;
 
     @Autowired
     private ProdutoRepository produtoRepository;
 
-    public Pedido salvarPedido(Pedido pedido){
+    public Pedido salvarPedido(Pedido pedido) {
         pedido.setDataPedido(LocalDate.now());
 
-        for (ItemDoPedido item : pedido.getItens()){
-            Produto produto  = produtoRepository.findById(item.getProduto().getIdProduto()).orElseThrow(() -> new RuntimeException(message:"produto não encontrado"));
+        for (ItemDoPedido item : pedido.getItens()) {                    // getItens() agora existe
+            Produto produto = produtoRepository.findById(item.getProduto().getIdProduto())
+                    .orElseThrow(() -> new RuntimeException("produto não encontrado")); // sintaxe correta
 
             item.setProduto(produto);
-            item.SetPreco(produto.getValorProduto());
+            item.setPreco(produto.getValorProduto());                   // setPreco (minúsculo)
 
-            item.atualizarSubtotal();
-
+            item.atualizarSubtotal();                                    // método público corrigido
             item.setPedido(pedido);
         }
 

@@ -18,15 +18,15 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ItemDoPedido {
 
-     @Id
-     @GeneratedValue(strategy = GenerationType.AUTO)
-     private Integer idItem;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer idItem;
 
-     private Integer quantidade;
+    private Integer quantidade;
 
-     private double preco;
+    private double preco;
 
-     private double subTotal;
+    private double subtotal;   // nome padronizado: minúsculo, sem camelCase extra
 
     @ManyToOne
     @JoinColumn(name = "idProduto_fk")
@@ -36,11 +36,11 @@ public class ItemDoPedido {
     @JoinColumn(name = "idPedido_fk")
     private Pedido pedido;
 
-    public double calcularSubTotal(){
+    public double calcularSubtotal() {   // método público para retornar o cálculo
         return quantidade * preco;
+    }
 
-        private void atualizarSubtotal(){
-            this.subtotal = calcularSubtotal();
-        }
+    public void atualizarSubtotal() {    // método público separado
+        this.subtotal = calcularSubtotal();
     }
 }

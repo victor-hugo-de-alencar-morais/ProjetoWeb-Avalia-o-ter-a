@@ -52,16 +52,22 @@ public class UsuarioService {
     
     // metodo para redifinir a senha 
 
-  public boolean redefinirSenha(String token, String novaSenha){
-    Usuario usuario = usuarioRepository.findByResetToken(token);
-    if(usuario == null || usuario.getTokenExpiracao().isBefore(LocalDateTime.now())){
-      return false;
+  public boolean redefinirSenha(String token, String novaSenha) {
+    // Busca com Optional, para evitar NullPointerException
+    Usuario usuario = usuarioRepository.findByResetToken(token).orElse(null);
+    
+    if (usuario == null || usuario.getTokenExpiracao().isBefore(LocalDateTime.now())) {
+        return false;
     }
-    //criptografa a nova senha
+    
+    // Criptografa e redefine a senha
     usuario.setSenhaUsuario(passwordEncoder.encode(novaSenha));
-    usuario.setResetToken(resetToken: null);
-    usuario.setTokenExpiracao(tokenExpiracao: null);
+    
+    // Invalida o token de recuperação
+    usuario.setResetToken(null);
+    usuario.setTokenExpiracao(null);
+    
     usuarioRepository.save(usuario);
     return true;
-  }
+}
 }

@@ -24,7 +24,7 @@ public class Fornecedor {
     @Column(nullable = false, length = 40)
     private String nomeFornecedor;
     
-    @Column(nullable = false, length = 14)
+    @Column(nullable = false, length = 18)
     private String cnpjFornecedor;
 
     @Column(nullable = false, length = 30)
