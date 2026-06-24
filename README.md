@@ -1,0 +1,1 @@
+arrumar o campo de cesta de produtos, ainda com o erro de gerar 2 dos mesmos produtos e também não está lendo se há um produto gerado corretamente, além de fazer o css e o campo de gerar relatorio, e arrumar o erro do botão de sair da conta 
