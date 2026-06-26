@@ -19,7 +19,8 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login","/tabajara", "/css/**", "/images/**", "/usuarios/criar",
-                                "/usuarios/salvar","/","/index","/home","/esqueci-senha/**","/redefinir-senha/**")
+                                "/usuarios/salvar","/","/index","/home","/esqueci-senha/**","/redefinir-senha/**",
+                                "/pedidos/**")  
                         .permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form
@@ -43,6 +44,4 @@ public class SecurityConfig {
             throws Exception {
         return config.getAuthenticationManager();
     }
-
- 
 }

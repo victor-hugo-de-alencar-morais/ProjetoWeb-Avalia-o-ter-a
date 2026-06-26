@@ -1,211 +1,1029 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Organizações Tabajara - Formulário de Usuário</title>
+    <title>Organizações Tabajara - Formulário de Pedido</title>
+    
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="/style.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --success-color: #27ae60;
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+            --light-bg: #f8f9fa;
+            --border-color: #dee2e6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: var(--primary-color);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .btn-logout {
+            background: var(--danger-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-logout:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            background: var(--light-bg);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 18px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: var(--secondary-color);
+            border-radius: 2px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 15px;
+            align-items: end;
+        }
+
+        .form-group {
+            margin-bottom: 0;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .btn-add {
+            background: var(--success-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-add:hover {
+            background: #219a52;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        thead {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        @keyframes highlightRow {
+            0% { background-color: #d4edda; }
+            100% { background-color: transparent; }
+        }
+
+        .row-updated {
+            animation: highlightRow 1.5s ease;
+        }
+
+        .empty-row td {
+            text-align: center;
+            color: #999;
+            padding: 30px;
+            font-style: italic;
+        }
+
+        .quantity-input {
+            width: 70px;
+            padding: 8px;
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .quantity-input:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+        }
+
+        .btn-remove {
+            background: var(--danger-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-remove:hover {
+            background: #c0392b;
+            transform: scale(1.05);
+        }
+
+        .total-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 25px;
+            border-radius: 10px;
+            margin-top: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .total-label {
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .total-value {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .btn-save {
+            background: white;
+            color: var(--primary-color);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            margin-top: 25px;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            background: #f0f0f0;
+        }
+
+        .btn-save:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* SEÇÃO DE RELATÓRIO */
+        .relatorio-section {
+            display: none;
+            background: white;
+            border: 2px solid var(--success-color);
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .relatorio-header {
+            background: var(--success-color);
+            color: white;
+            padding: 20px;
+            border-radius: 8px 8px 0 0;
+            margin: -25px -25px 20px -25px;
+        }
+
+        .relatorio-header h3 {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-pedido {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .info-card {
+            background: var(--light-bg);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .info-card label {
+            display: block;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .info-card span {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .badge-status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .table-relatorio {
+            margin-top: 20px;
+        }
+
+        .table-relatorio thead {
+            background: var(--primary-color);
+        }
+
+        .table-relatorio tfoot {
+            background: #f8f9fa;
+            font-weight: bold;
+        }
+
+        .table-relatorio tfoot td {
+            border-top: 2px solid var(--primary-color);
+        }
+
+        .btn-imprimir {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .btn-imprimir:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .btn-novo-pedido {
+            background: var(--success-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .btn-novo-pedido:hover {
+            background: #219a52;
+            transform: translateY(-2px);
+        }
+
+        .botoes-relatorio {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .toast-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-left: 4px solid var(--success-color);
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            z-index: 1000;
+            animation: slideIn 0.3s ease, slideOut 0.3s ease 2.7s forwards;
+            max-width: 350px;
+        }
+
+        .toast-notification.update {
+            border-left-color: var(--warning-color);
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .total-section {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            
+            .info-pedido {
+                grid-template-columns: 1fr;
+            }
+            
+            .botoes-relatorio {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="main-container">
+        <div class="header">
+            <h1><i class="bi bi-cart3"></i> Organizações Tabajara</h1>
+            <form th:action="@{/logout}" method="post" style="display: inline;">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <button type="submit" class="btn-logout">
+                    <i class="bi bi-box-arrow-right"></i> Sair da Conta
+                </button>
+            </form>
+        </div>
 
-    <datalist id="listarUsuarios">
-        <option th:each="u : ${usuarios}"
-            th:value="${u.idUsuario + ' - ' + u.nomeUsuario}">
-        </option>
-    </datalist>
+        <div class="content">
+            <datalist id="listarUsuarios">
+                <option th:each="u : ${usuarios}"
+                    th:value="${u.idUsuario + ' - ' + u.nomeUsuario}">
+                </option>
+            </datalist>
 
-    <datalist id="listarProdutos">
-    <option th:each="p : ${produtos}"
-        th:value="${p.idProduto + ' - ' + p.descricaoProduto}"
-        th:attr="data-preco=${p.valorProduto}">
-    </option>
-</datalist>
-    
-    <p>I. Identificação do Usuário</p>
-    <label for="usuario">usuario</label>
-    <input list="listarUsuarios" id="usuarios" type="text" placeholder="Digite o nome ou código do usuario">
-    <p>II. Adicionar produto ao pedido</p>
-    <label for="produto">produto</label>
-    <input list="ListarProdutos" id="produto" type="text" placeholder="Digite seu produto" >
+            <datalist id="listarProdutos">
+                <option th:each="p : ${produtos}"
+                    th:value="${p.idProduto + ' - ' + p.descricaoProduto}"
+                    th:attr="data-preco=${p.valorProduto}">
+                </option>
+            </datalist>
 
-    <label for="quantidade">Quantidade</label>
-    <input type="number" id="quantidade" placeholder="0" min="1">
-    <button type="button" onclick="adicionarItem()">
-        <span>+</span> Adicionar
-    </button>
-    <table>
-        <thead>
-            <tr>
-                <th>Produto</th>
-                <th>Quantidade</th>
-                <th>Preço unitário</th>
-                <th>Subtotal</th>
-                <th>Ação</th>
-            </tr>
-        </thead>
-        <tbody id="tabela-itens">
-            <tr id="empty-row">
-                <td colspan="5">Nenhum produto adicionado no pedido</td>
-            </tr>
-        </tbody>
-    </table>
+            <!-- SEÇÃO DO FORMULÁRIO (visível antes de salvar) -->
+            <div id="secao-formulario">
+                <!-- Seção I: Identificação do Usuário -->
+                <div class="section">
+                    <div class="section-title">
+                        <i class="bi bi-person-badge"></i> I. Identificação do Usuário
+                    </div>
+                    <div class="form-group">
+                        <label for="usuario">Selecione o Usuário</label>
+                        <input list="listarUsuarios" 
+                               id="usuario" 
+                               class="form-control" 
+                               type="text" 
+                               placeholder="Digite o nome ou código do usuário...">
+                    </div>
+                </div>
 
-    <span>Total do pedido</span>
-    <span>R$ <span id="totalPedido">0,00</span></span>
-
-    <button onclick="salvarPedido()">Confirmar e salvar pedido  </button>
-
-        <script>
-    let itens = [];
-
-    function adicionarItem() {
-        let produtoInput = document.getElementById("produto").value;
-        let quantidade = document.getElementById("quantidade").value;
-
-        if (!produtoInput || quantidade <= 0) {
-            alert("Preencha corretamente o produto e a quantidade!");
-            return;
-        }
-
-        let partes = produtoInput.split(" - ");
-        let produtoId = partes[0];
-        let produtoNome = partes[1];
-
-        let options = document.querySelectorAll("#listaProdutos option");
-        let preco = null;
-
-        options.forEach(opt => {
-            if (opt.value === produtoInput) {
-                preco = opt.getAttribute("data-preco");
-            }
-        });
-
-        if (!preco) {
-            alert("Produto inválido! Selecione um produto da lista.");
-            return;
-        }
-
-        let subtotal = quantidade * preco;
-
-        itens.push({
-            produto: { idProduto: produtoId },
-            nomeProduto: produtoNome,
-            quantidade: parseInt(quantidade),
-            preco: parseFloat(preco),
-            subtotal: subtotal
-        });
-
-        document.getElementById("produto").value = "";
-        document.getElementById("quantidade").value = "";
-
-        renderTabela();
-    }
-
-    function removerItem(index) {
-        itens.splice(index, 1);
-        renderTabela();
-    }
-
-    // NOVO: função para alterar quantidade diretamente na tabela
-    function alterarQuantidade(index, novaQuantidade) {
-
-        if (novaQuantidade <= 0) {
-            alert("Quantidade inválida!");
-            return;
-        }
-
-        let item = itens[index];
-
-        item.quantidade = parseInt(novaQuantidade); // atualiza quantidade
-        item.subtotal = item.quantidade * item.preco; // recalcula subtotal
-
-        renderTabela(); // atualiza tela
-    }
-
-    function renderTabela() {
-        let tabela = document.getElementById("tabela-itens");
-        let emptyRow = document.getElementById("empty-row");
-
-        tabela.innerHTML = "";
-
-        if (itens.length === 0) {
-            tabela.innerHTML = `<tr class="empty-row" id="empty-row"><td colspan="5">Nenhum produto adicionado ao pedido.</td></tr>`;
-            document.getElementById("totalPedido").innerText = "0,00";
-            return;
-        }
-
-        let total = 0;
-
-        itens.forEach((item, index) => {
-            total += item.subtotal;
-
-            tabela.innerHTML += `
-                <tr>
-                    <td>${item.nomeProduto}</td>
-
-                    <!-- ANTIGO: quantidade apenas como texto
-                    <td>${item.quantidade}</td>
-                    -->
-
-                    <!-- NOVO: campo editável para alterar quantidade -->
-                    <td>
-                        <input type="number" min="1" value="${item.quantidade}" 
-                               onchange="alterarQuantidade(${index}, this.value)" 
-                               style="width:60px;">
-                    </td>
-
-                    <td>R$ ${item.preco.toFixed(2).replace('.', ',')}</td>
-                    <td>R$ ${item.subtotal.toFixed(2).replace('.', ',')}</td>
-                    <td>
-                        <button class="btn-remove" onclick="removerItem(${index})">
-                            Remover
+                <!-- Seção II: Adicionar Produto -->
+                <div class="section">
+                    <div class="section-title">
+                        <i class="bi bi-plus-circle"></i> II. Adicionar Produto ao Pedido
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="produto">Produto</label>
+                            <input list="listarProdutos" 
+                                   id="produto" 
+                                   class="form-control" 
+                                   type="text" 
+                                   placeholder="Selecione o produto...">
+                        </div>
+                        <div class="form-group">
+                            <label for="quantidade">Quantidade</label>
+                            <input type="number" 
+                                   id="quantidade" 
+                                   class="form-control" 
+                                   placeholder="0" 
+                                   min="1" 
+                                   value="1">
+                        </div>
+                        <button type="button" class="btn-add" onclick="adicionarItem()">
+                            <i class="bi bi-plus-lg"></i> Adicionar
                         </button>
-                    </td>
-                </tr>
+                    </div>
+                </div>
+
+                <!-- Seção III: Tabela de Produtos -->
+                <div class="section">
+                    <div class="section-title">
+                        <i class="bi bi-list-check"></i> III. Produtos no Pedido
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Produto</th>
+                                    <th>Quantidade</th>
+                                    <th>Preço Unitário</th>
+                                    <th>Subtotal</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabela-itens">
+                                <tr class="empty-row">
+                                    <td colspan="5">Nenhum produto adicionado ao pedido</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="total-section">
+                        <span class="total-label">
+                            <i class="bi bi-calculator"></i> Total do Pedido
+                        </span>
+                        <span class="total-value">R$ <span id="totalPedido">0,00</span></span>
+                    </div>
+
+                    <button type="button" class="btn-save" onclick="salvarPedido()">
+                        <i class="bi bi-check-circle"></i> Confirmar e Salvar Pedido
+                    </button>
+                </div>
+            </div>
+
+            <!-- SEÇÃO DO RELATÓRIO (visível após salvar) -->
+            <div id="secao-relatorio" class="section relatorio-section">
+                <!-- Conteúdo gerado dinamicamente -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let itens = [];
+        let ultimoIndiceAtualizado = -1;
+
+        function getCsrfToken() {
+            const token = document.querySelector('meta[name="_csrf"]')?.getAttribute('content');
+            const header = document.querySelector('meta[name="_csrf_header"]')?.getAttribute('content');
+            return { token, header };
+        }
+
+        function mostrarNotificacao(mensagem, tipo = 'success') {
+            const notificacaoAnterior = document.querySelector('.toast-notification');
+            if (notificacaoAnterior) {
+                notificacaoAnterior.remove();
+            }
+
+            const toast = document.createElement('div');
+            toast.className = `toast-notification ${tipo}`;
+            
+            let icone = 'bi-check-circle';
+            if (tipo === 'update') icone = 'bi-arrow-repeat';
+            if (tipo === 'error') icone = 'bi-exclamation-triangle';
+            
+            toast.innerHTML = `
+                <i class="bi ${icone}"></i>
+                <span style="margin-left: 10px;">${mensagem}</span>
             `;
-        });
+            
+            document.body.appendChild(toast);
 
-        document.getElementById("totalPedido").innerText = total.toFixed(2).replace('.', ',');
-    }
-
-    function salvarPedido() {
-        let clienteInput = document.getElementById("cliente").value;
-
-        if (!clienteInput) {
-            alert("Selecione um cliente antes de salvar!");
-            return;
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.remove();
+                }
+            }, 3000);
         }
 
-        if (itens.length === 0) {
-            alert("Adicione ao menos um produto ao pedido!");
-            return;
+        function encontrarProdutoExistente(produtoId) {
+            return itens.findIndex(item => item.produto.idProduto === produtoId);
         }
 
-        let clienteId = clienteInput.split(" - ")[0];
+        function adicionarItem() {
+            let produtoInput = document.getElementById("produto").value.trim();
+            let quantidade = parseInt(document.getElementById("quantidade").value);
 
-        let pedido = {
-            cliente: { idCliente: clienteId },
-            itens: itens
-        };
+            if (!produtoInput) {
+                alert("Por favor, selecione um produto!");
+                document.getElementById("produto").focus();
+                return;
+            }
 
-        fetch("/pedidos", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(pedido)
-        })
-        .then(res => res.json())
-        .then(data => {
-            alert("Pedido salvo com sucesso!");
-            location.reload();
-        })
-        .catch(err => {
-            alert("Erro ao salvar o pedido. Tente novamente.");
-            console.error(err);
+            if (!quantidade || quantidade <= 0) {
+                alert("A quantidade deve ser maior que zero!");
+                document.getElementById("quantidade").focus();
+                return;
+            }
+
+            let partes = produtoInput.split(" - ");
+            if (partes.length < 2) {
+                alert("Produto inválido! Selecione um produto da lista.");
+                return;
+            }
+
+            let produtoId = parseInt(partes[0].trim());
+            let produtoNome = partes.slice(1).join(" - ").trim();
+
+            let indiceExistente = encontrarProdutoExistente(produtoId);
+            
+            if (indiceExistente !== -1) {
+                let itemExistente = itens[indiceExistente];
+                let quantidadeAntiga = itemExistente.quantidade;
+                
+                itemExistente.quantidade += quantidade;
+                itemExistente.subtotal = itemExistente.quantidade * itemExistente.preco;
+                
+                ultimoIndiceAtualizado = indiceExistente;
+                
+                document.getElementById("produto").value = "";
+                document.getElementById("quantidade").value = "1";
+                
+                renderTabela();
+                
+                mostrarNotificacao(
+                    `${produtoNome}: ${quantidadeAntiga} → ${itemExistente.quantidade} unidades`, 
+                    'update'
+                );
+                return;
+            }
+
+            let options = document.querySelectorAll("#listarProdutos option");
+            let preco = null;
+
+            options.forEach(opt => {
+                if (opt.value.startsWith(produtoId + " - ")) {
+                    preco = parseFloat(opt.getAttribute("data-preco"));
+                }
+            });
+
+            if (!preco || isNaN(preco)) {
+                alert("Erro ao encontrar o preço do produto.");
+                return;
+            }
+
+            let subtotal = quantidade * preco;
+
+            itens.push({
+                produto: { 
+                    idProduto: produtoId
+                },
+                nomeProduto: produtoNome,
+                quantidade: quantidade,
+                preco: preco,
+                subtotal: subtotal
+            });
+
+            document.getElementById("produto").value = "";
+            document.getElementById("quantidade").value = "1";
+
+            renderTabela();
+            mostrarNotificacao(`${produtoNome} adicionado com sucesso!`);
+        }
+
+        function removerItem(index) {
+            if (confirm('Tem certeza que deseja remover este produto?')) {
+                const itemRemovido = itens[index];
+                itens.splice(index, 1);
+                renderTabela();
+                mostrarNotificacao(`${itemRemovido.nomeProduto} removido da cesta`);
+            }
+        }
+
+        function alterarQuantidade(index, novaQuantidade) {
+            novaQuantidade = parseInt(novaQuantidade);
+
+            if (isNaN(novaQuantidade) || novaQuantidade <= 0) {
+                alert("Quantidade inválida! O valor deve ser maior que zero.");
+                renderTabela();
+                return;
+            }
+
+            let item = itens[index];
+            item.quantidade = novaQuantidade;
+            item.subtotal = item.quantidade * item.preco;
+
+            renderTabela();
+        }
+
+        function renderTabela() {
+            let tabela = document.getElementById("tabela-itens");
+            tabela.innerHTML = "";
+
+            if (itens.length === 0) {
+                tabela.innerHTML = `
+                    <tr class="empty-row">
+                        <td colspan="5">
+                            <i class="bi bi-inbox"></i> Nenhum produto adicionado ao pedido
+                        </td>
+                    </tr>`;
+                document.getElementById("totalPedido").innerText = "0,00";
+                return;
+            }
+
+            let total = 0;
+
+            itens.forEach((item, index) => {
+                total += item.subtotal;
+
+                let classeDestaque = (index === ultimoIndiceAtualizado) ? 'row-updated' : '';
+
+                tabela.innerHTML += `
+                    <tr class="${classeDestaque}">
+                        <td>
+                            <strong>${item.nomeProduto}</strong>
+                            ${index === ultimoIndiceAtualizado ? '<small class="text-warning"> (atualizado)</small>' : ''}
+                        </td>
+                        <td>
+                            <input type="number" 
+                                   min="1" 
+                                   value="${item.quantidade}" 
+                                   onchange="alterarQuantidade(${index}, this.value)" 
+                                   class="quantity-input">
+                        </td>
+                        <td>R$ ${item.preco.toFixed(2).replace('.', ',')}</td>
+                        <td>R$ ${item.subtotal.toFixed(2).replace('.', ',')}</td>
+                        <td>
+                            <button type="button" class="btn-remove" onclick="removerItem(${index})">
+                                <i class="bi bi-trash"></i> Remover
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            ultimoIndiceAtualizado = -1;
+            document.getElementById("totalPedido").innerText = total.toFixed(2).replace('.', ',');
+        }
+
+        // ============ FUNÇÃO DE SALVAR ============
+        function salvarPedido() {
+            let usuarioInput = document.getElementById("usuario").value.trim();
+
+            if (!usuarioInput) {
+                alert("Selecione um usuário antes de salvar!");
+                document.getElementById("usuario").focus();
+                return;
+            }
+
+            if (itens.length === 0) {
+                alert("Adicione ao menos um produto ao pedido!");
+                document.getElementById("produto").focus();
+                return;
+            }
+
+            let partesUsuario = usuarioInput.split(" - ");
+            if (partesUsuario.length < 2) {
+                alert("Usuário inválido! Selecione um usuário da lista.");
+                return;
+            }
+
+            let usuarioId = parseInt(partesUsuario[0].trim());
+            let usuarioNome = partesUsuario.slice(1).join(" - ").trim();
+
+            let valorTotal = itens.reduce((acc, item) => acc + item.subtotal, 0);
+
+            let pedido = {
+                dataPedido: new Date().toISOString().split('T')[0],
+                totalPedido: valorTotal,
+                usuario: {
+                    idUsuario: usuarioId
+                },
+                itens: itens.map(item => ({
+                    quantidade: item.quantidade,
+                    preco: item.preco,
+                    subtotal: item.subtotal,
+                    produto: {
+                        idProduto: item.produto.idProduto
+                    }
+                }))
+            };
+
+            const { token, header } = getCsrfToken();
+
+            let btnSalvar = document.querySelector('.btn-save');
+            btnSalvar.disabled = true;
+            btnSalvar.innerHTML = '<i class="bi bi-hourglass-split"></i> Salvando...';
+
+            let headers = {
+                "Content-Type": "application/json"
+            };
+            
+            if (token && header) {
+                headers[header] = token;
+            }
+
+            fetch("/pedidos", {
+                method: "POST",
+                headers: headers,
+                body: JSON.stringify(pedido)
+            })
+            .then(async response => {
+                const text = await response.text();
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${text}`);
+                }
+                
+                try {
+                    return JSON.parse(text);
+                } catch {
+                    return { mensagem: text };
+                }
+            })
+            .then(data => {
+                // MOSTRAR RELATÓRIO
+                mostrarRelatorio(data, usuarioNome, valorTotal);
+            })
+            .catch(err => {
+                console.error('Erro:', err);
+                
+                if (err.message.includes('403')) {
+                    alert("Erro de autenticação. Recarregue a página e tente novamente.");
+                } else {
+                    alert("Erro ao salvar: " + err.message);
+                }
+                
+                btnSalvar.disabled = false;
+                btnSalvar.innerHTML = '<i class="bi bi-check-circle"></i> Confirmar e Salvar Pedido';
+            });
+        }
+
+        // ============ FUNÇÃO PARA MOSTRAR RELATÓRIO ============
+        function mostrarRelatorio(pedidoSalvo, usuarioNome, valorTotal) {
+            // Esconder formulário
+            document.getElementById('secao-formulario').style.display = 'none';
+            
+            // Mostrar seção de relatório
+            const secaoRelatorio = document.getElementById('secao-relatorio');
+            secaoRelatorio.style.display = 'block';
+            
+            // Número do pedido (usa o ID retornado ou timestamp)
+            const numeroPedido = pedidoSalvo.idPedido || 'NOVO';
+            const dataPedido = pedidoSalvo.dataPedido || new Date().toISOString().split('T')[0];
+            
+            // Construir HTML do relatório
+            let html = `
+                <div class="relatorio-header">
+                    <h3>
+                        <i class="bi bi-check-circle-fill"></i> 
+                        Pedido Confirmado com Sucesso!
+                    </h3>
+                </div>
+                
+                <div class="info-pedido">
+                    <div class="info-card">
+                        <label>Nº do Pedido</label>
+                        <span>#${numeroPedido}</span>
+                    </div>
+                    <div class="info-card">
+                        <label>Data</label>
+                        <span>${formatarData(dataPedido)}</span>
+                    </div>
+                    <div class="info-card">
+                        <label>Cliente</label>
+                        <span>${usuarioNome}</span>
+                    </div>
+                    <div class="info-card">
+                        <label>Status</label>
+                        <span class="badge-status badge-success">CONFIRMADO</span>
+                    </div>
+                </div>
+                
+                <div class="table-container table-relatorio">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Produto</th>
+                                <th>Quantidade</th>
+                                <th>Preço Unitário</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            // Adicionar itens
+            itens.forEach(item => {
+                html += `
+                    <tr>
+                        <td><strong>${item.nomeProduto}</strong></td>
+                        <td>${item.quantidade}</td>
+                        <td>R$ ${item.preco.toFixed(2).replace('.', ',')}</td>
+                        <td>R$ ${item.subtotal.toFixed(2).replace('.', ',')}</td>
+                    </tr>
+                `;
+            });
+            
+            html += `
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3"><strong>TOTAL DO PEDIDO</strong></td>
+                                <td><strong>R$ ${valorTotal.toFixed(2).replace('.', ',')}</strong></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                
+                <div class="botoes-relatorio">
+                    <button class="btn-imprimir" onclick="window.print()">
+                        <i class="bi bi-printer"></i> Imprimir Relatório
+                    </button>
+                    <button class="btn-novo-pedido" onclick="novoPedido()">
+                        <i class="bi bi-plus-circle"></i> Novo Pedido
+                    </button>
+                </div>
+            `;
+            
+            secaoRelatorio.innerHTML = html;
+            
+            // Scroll suave até o relatório
+            secaoRelatorio.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            
+            // Notificação de sucesso
+            mostrarNotificacao('Pedido salvo com sucesso!');
+        }
+
+        function formatarData(data) {
+            const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+            return new Date(data).toLocaleDateString('pt-BR', options);
+        }
+
+        function novoPedido() {
+            // Limpar tudo e recomeçar
+            itens = [];
+            document.getElementById("usuario").value = "";
+            document.getElementById("produto").value = "";
+            document.getElementById("quantidade").value = "1";
+            
+            // Mostrar formulário novamente
+            document.getElementById('secao-formulario').style.display = 'block';
+            document.getElementById('secao-relatorio').style.display = 'none';
+            
+            // Resetar tabela
+            renderTabela();
+            
+            // Foco no campo usuário
+            document.getElementById("usuario").focus();
+            
+            // Scroll para o topo
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('usuario').focus();
+            
+            document.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && e.target.id === 'quantidade') {
+                    e.preventDefault();
+                    adicionarItem();
+                }
+            });
         });
-    }
-</script>
-   
+    </script>
 </body>
 </html>
